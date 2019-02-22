@@ -1,25 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import axios from 'axios'
 import './App.css';
+import './ApiReq/ApiReq.js'
+const API_KEY = process.env.REACT_APP_API_KEY;
+
+class Apicom extends Component {
+  componentDidMount () {
+//https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=mongolian%20grill&inputtype=textquery&fields=photos,formatted_address,name,opening_hours,rating&locationbias=circle:2000@47.6918452,-122.2226413&key=YOUR_API_KEY
+    // axios.get('https://maps.googleapis.com/maps/api/place/findplacefromtext/output?parameters').then(response => {console.log(response)})
+    axios.get('https://jsonplaceholder.typicode.com/posts').then(response => {console.log(response)})
+    
+      // console.log(response.data)
+    });
+  }
+}
 
 class App extends Component {
+  state ={
+    posts: []
+  }
   render() {
-    return (
+    
+    const posts = this.state.posts.map(post=>{
+      return<Post/>
+    })
+
+    return ( 
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>Cawaabungaaa</h1>
+        <h1><Post/></Post></h1>
+        <
       </div>
     );
   }
