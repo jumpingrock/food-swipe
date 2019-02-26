@@ -25,50 +25,53 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      posts: [],
+      nextPage: "",
       results: []
 
     }
-    console.log(this.state)
   }
+  nextResultHandler = () => {
+
+  }
+  
   componentDidMount = () => {
     let that = this
     //library to googles API is nested in index.html
     const nearby = (map, pyrmont) => {
       var service = new window.google.maps.places.PlacesService(map);
       service.nearbySearch(
-        // { location: pyrmont, rankBy: google.maps.places.RankBy.DISTANCE, keyword: ['restaurant'], opennow: true,pagetoken: true },
-        { location: pyrmont, radius:500, keyword: ['restaurant'], opennow: true,pagetoken: true },
+        { location: pyrmont, rankBy: window.google.maps.places.RankBy.DISTANCE, keyword: ['restaurant'], opennow: true, pagetoken: that.nextPage },
+        // { location: pyrmont, radius: 500, keyword: ['restaurant'], opennow: true, pagetoken: true },
         function (results, status, pagination) {
           console.log(results)
-          console.log(status, pagination)
+          console.log(pagination.A)
           that.setState({ results: results })
+          that.setState({ nextPage: pagination.A })
+          console.log(that.nextPage)
 
         });
-
     }
-
     initMap(nearby);
-
   }
   render() {
 
-    const result = this.state.results.map(post => {
-      console.log(post.name)
-      console.log(post.rating)
-      console.log(post.price_level)
-
+    let result = this.state.results.map(post => {
       if (post.photos.length === 1) {
+        // console.log(post.name)
+        // console.log(post.rating)
+        // console.log(post.price_level)
         // console.log(post.photos[0].getUrl())
         let photo = post.photos[0].getUrl()
         return (
           <div>
-            <img src={photo} alt={post.name} height="400px" width="550px" />
-            <ol>Name: {post.name}</ol>
-            <ol>Address: {post.vicinity}</ol>
-            <ol>Rating ({post.user_ratings_total}): {post.rating}</ol>
-            <ol>Price: {post.price_level}</ol>
-            <br />
+
+            <img src={photo} alt={post.name} height="400px" width="550px" /><br />
+            <h3>Name: {post.name}</h3>
+            <h5>Address: {post.vicinity}</h5>
+            <h5>Rating ({post.user_ratings_total}): {post.rating}</h5>
+            <h5>Price: {post.price_level}</h5>
+
+            
           </div>
         )
       } else {
@@ -77,6 +80,25 @@ class App extends Component {
     })
 
     return (
+      // <div className="container">
+      //   <div className="row">
+      //     <div className="col">
+      //       1 of 3
+      //       <h1>Cawabunggaaaa</h1>
+      //       <p>hello</p>
+      //     </div>
+      //     <div className="col-6 Posts" >
+      //       2 of 3 (wider)
+            
+      //       {result}
+            
+      //     </div>
+      //     <div className="col" id="map">
+      //       3 of 3
+      //     </div>
+      //   </div>
+      // </div>
+
 
       <div className="App">
         <h1>Cawabunggaaaa</h1>
@@ -86,10 +108,10 @@ class App extends Component {
           <ul>
             {result}
           </ul>
-          <FullPost />
+
         </div>
         <div id="map">
-          {/* <ul>{posts}</ul> */}
+
         </div>
       </div>
     );
