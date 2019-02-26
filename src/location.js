@@ -1,4 +1,6 @@
 // import React from 'react';
+// const API_KEY = process.env.REACT_APP_API_KEY;
+
 const fillLocation = () => {
   let location = new Promise(function (resolve, reject) {
     navigator.geolocation.getCurrentPosition(
@@ -14,7 +16,7 @@ const fillLocation = () => {
 
 var map;
 async function initMap(callback) {
-  fillLocation()
+  // fillLocation()
   // Create the map.
   var pyrmont = await fillLocation()
   // console.log(pyrmont)
@@ -28,4 +30,3 @@ async function initMap(callback) {
 
 
 export default initMap;
-// export default getLocation;
