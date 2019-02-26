@@ -4,7 +4,7 @@ import './App.css';
 import initMap from './location.js'
 
 // var keyword = "food", radius = 200, location = getLocation();
-const API_KEY = process.env.REACT_APP_API_KEY;
+// const API_KEY = process.env.REACT_APP_API_KEY;
 
 class FullPost extends Component {
   render() {
@@ -22,65 +22,96 @@ class FullPost extends Component {
 }
 
 class App extends Component {
-  
-  state = {
-    posts: [],
-    currentLoc: [],
-    gResult: []
+  constructor() {
+    super();
+    this.state = {
+      nextPage: "",
+      results: []
+
+    }
+  }
+  nextResultHandler = () => {
 
   }
-
   
-  componentDidMount() {
-
-    function nearby(map,pyrmont) {
+  componentDidMount = () => {
+    let that = this
+    //library to googles API is nested in index.html
+    const nearby = (map, pyrmont) => {
       var service = new window.google.maps.places.PlacesService(map);
       service.nearbySearch(
-        { location: pyrmont, radius: 500, type: ['restaurant'] },
+        { location: pyrmont, rankBy: window.google.maps.places.RankBy.DISTANCE, keyword: ['restaurant'], opennow: true, pagetoken: that.nextPage },
+        // { location: pyrmont, radius: 500, keyword: ['restaurant'], opennow: true, pagetoken: true },
         function (results, status, pagination) {
           console.log(results)
+          console.log(pagination.A)
+          that.setState({ results: results })
+          that.setState({ nextPage: pagination.A })
+          console.log(that.nextPage)
+
         });
     }
-
     initMap(nearby);
-    //using GOOGLE MAP API (nearby search)
-    // https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
-    // axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?').then(response => {this.setState({post: response.data});})
-    // getLocation();
-    // axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=1.3032867,103.82743389999999&radius=200&keyword=food&opennow&key=AIzaSyAjE1DfK0kK-mg0BfXOAYdCqauXjBAn73g').then(response => {
-    //   this.setState({post: response.data});
-    //   console.log(response.data);
-
-    // }) 
-    // let result = Promise.resolve(this.initMap)
-    // initMap()
-    // axios.get('https://jsonplaceholder.typicode.com/posts').then(response => {
-    //   this.setState({ post: response.data });
-    //   console.log(response.data);
-
-
-    // })
-    // https://maps.googleapis.com/maps/api/place/findplacefromtext/output?parameters
-    // https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY
-
   }
   render() {
-   
-    // const posts = this.state.posts.map(post => {
-      // return <ol>{post}</ol>
-    // })
+
+    let result = this.state.results.map(post => {
+      if (post.photos.length === 1) {
+        // console.log(post.name)
+        // console.log(post.rating)
+        // console.log(post.price_level)
+        // console.log(post.photos[0].getUrl())
+        let photo = post.photos[0].getUrl()
+        return (
+          <div>
+
+            <img src={photo} alt={post.name} height="400px" width="550px" /><br />
+            <h3>Name: {post.name}</h3>
+            <h5>Address: {post.vicinity}</h5>
+            <h5>Rating ({post.user_ratings_total}): {post.rating}</h5>
+            <h5>Price: {post.price_level}</h5>
+
+            
+          </div>
+        )
+      } else {
+        result = null
+      }
+    })
 
     return (
+      // <div className="container">
+      //   <div className="row">
+      //     <div className="col">
+      //       1 of 3
+      //       <h1>Cawabunggaaaa</h1>
+      //       <p>hello</p>
+      //     </div>
+      //     <div className="col-6 Posts" >
+      //       2 of 3 (wider)
+            
+      //       {result}
+            
+      //     </div>
+      //     <div className="col" id="map">
+      //       3 of 3
+      //     </div>
+      //   </div>
+      // </div>
+
+
       <div className="App">
         <h1>Cawabunggaaaa</h1>
-        <p>{API_KEY}</p>
-        <p>{this.state.gResult}</p>
-        <p>{this.state.posts}</p>
+        <p>hello</p>
+
         <div className="Posts" >
-          <FullPost />
+          <ul>
+            {result}
+          </ul>
+
         </div>
         <div id="map">
-            {/* <ul>{posts}</ul> */}
+
         </div>
       </div>
     );
