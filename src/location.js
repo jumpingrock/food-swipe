@@ -6,8 +6,16 @@ const fillLocation = () => {
     navigator.geolocation.getCurrentPosition(
       function (result) {
         resolve(new window.google.maps.LatLng(result.coords.latitude, result.coords.longitude))
-      })
+      }, 
+      function (error) { 
+        console.log("getCurrentPosition Error", error)
+        
+       },
+      {enableHighAccuracy: true}
+    )
   })
+
+
   return location;
 }
 // This example requires the Places library. Include the libraries=places
@@ -23,9 +31,11 @@ async function initMap(callback) {
   map = new window.google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
     zoom: 17
+
   });
 
- callback(map, pyrmont);
+
+  callback(map, pyrmont);
 }
 
 
