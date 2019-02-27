@@ -15,16 +15,13 @@ const fillLocation = () => {
     )
   })
 
-
   return location;
 }
 // This example requires the Places library. Include the libraries=places
 // parameter when you first load the API. For example:
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 var map;
 async function initMap(callback) {
-  // fillLocation()
   // Create the map.
   var pyrmont = await fillLocation()
   // console.log(pyrmont)
@@ -33,7 +30,6 @@ async function initMap(callback) {
     zoom: 17
 
   });
-
 
   callback(map, pyrmont);
 }

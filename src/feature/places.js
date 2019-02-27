@@ -1,12 +1,9 @@
 import React from 'react'
 
 const Place = (props) => {
-    let i = 0
+
     let result = props.results.map(post => {
         
-        // let len = post.photos.length 
-        // if this array is not empty and array exist then do what ever is in if statement
-        i++
         if (post.photos !== undefined && post.photos.length > 0 ) {
             
             // console.log(i, post)
