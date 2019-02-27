@@ -1,117 +1,105 @@
 import React, { Component } from 'react';
-// import axios from 'axios'
 import './App.css';
 import initMap from './location.js'
-
-// var keyword = "food", radius = 200, location = getLocation();
+import Place from './feature/places.js'
 // const API_KEY = process.env.REACT_APP_API_KEY;
-
-class FullPost extends Component {
-  render() {
-    let post = <p>Please Select a Post!</p>;
-    post = (
-      <div className="Fullpost">
-        <h1>Title</h1>
-        <p>Content</p>
-        <div className="Edit">
-          <button className="Delete">Delete</button>
-        </div>
-      </div>)
-    return post
-  }
-}
-
 class App extends Component {
   constructor() {
     super();
     this.state = {
       nextPage: "",
-      results: []
+      recallAPI: "",
+      results: [],
+      opennow: true,
+      maxprice: 0,
+      pagetoken: true,
+      searchby: "radius",
+      scrolling: false,
+      
 
     }
   }
-  nextResultHandler = () => {
 
-  }
-  
-  componentDidMount = () => {
+  nextResultHandler = () => {
     let that = this
     //library to googles API is nested in index.html
     const nearby = (map, pyrmont) => {
+      // console.log("hello world")
       var service = new window.google.maps.places.PlacesService(map);
       service.nearbySearch(
-        { location: pyrmont, rankBy: window.google.maps.places.RankBy.DISTANCE, keyword: ['restaurant'], opennow: true, pagetoken: that.nextPage },
-        // { location: pyrmont, radius: 500, keyword: ['restaurant'], opennow: true, pagetoken: true },
+        { location: pyrmont, rankBy: window.google.maps.places.RankBy.DISTANCE, keyword: ['restaurant'], opennow: true, pagetoken: that.state.nextpage },
+        // if (this.state.searchby == "radius"){
+        // }
+        // { location: pyrmont, radius: 200, keyword: ['restaurant'], opennow: this.state.opennow, maxprice: this.state.maxprice, pagetoken: this.state.nextPage },
+        
         function (results, status, pagination) {
-          console.log(results)
-          console.log(pagination.A)
-          that.setState({ results: results })
-          that.setState({ nextPage: pagination.A })
-          console.log(that.nextPage)
+          console.log(results[0].name)
+          // console.log(pagination)
+          if(that.state.results.length <= 0){
+            that.setState({ results: results,nextPage: pagination.A  })
+            // console.log(pagination)
+          }else{
+            // console.log("in setState ELSE")
+            that.setState(function(prevState)  {
+              // console.log("in 88888 ELSE", prevState.results)
 
+              return {
+                nextPage: pagination.A,
+                scrolling: false,
+                results: [...prevState.results,...results]
+              }
+              
+            },()=>{
+
+              pagination.nextPage()
+
+              })
+            // console.log(pagination.A)
+          
+            }
         });
     }
     initMap(nearby);
   }
-  render() {
+  scrollHandler = (event) =>{
+    // console.log("this is running")
+    const {scrolling} =this.state
+    if (scrolling) return
+    const lastDiv = document.querySelector('.col-sm')
+    // console.log(lastDiv)
+    const lastDivOffset = lastDiv.offsetTop + lastDiv.clientHeight
+    // console.log("lastdivoffset",lastDivOffset)
+    const pageOffset = window.pageYOffset + window.innerHeight
+    // console.log("pageoffset",pageOffset, window.pageYOffset,window.innerHeight)
+    const bottomOffset = 1
+    // console.log("pageOffset: "+ pageOffset + " lastDivOffset: "+lastDivOffset+" bottomOffset: "+bottomOffset)
+    if(pageOffset > lastDivOffset - bottomOffset) {
 
-    let result = this.state.results.map(post => {
-      if (post.photos.length === 1) {
-        // console.log(post.name)
-        // console.log(post.rating)
-        // console.log(post.price_level)
-        // console.log(post.photos[0].getUrl())
-        let photo = post.photos[0].getUrl()
-        return (
-          <div>
+      // this.nextResultHandler();
+      this.setState({scrolling: true}, this.nextResultHandler);
 
-            <img src={photo} alt={post.name} height="400px" width="550px" /><br />
-            <h3>Name: {post.name}</h3>
-            <h5>Address: {post.vicinity}</h5>
-            <h5>Rating ({post.user_ratings_total}): {post.rating}</h5>
-            <h5>Price: {post.price_level}</h5>
+    }
+  }
 
-            
-          </div>
-        )
-      } else {
-        result = null
-      }
+  componentDidMount = () => {
+    this.nextResultHandler()
+    // console.log("within component didmount")
+    this.scrollListener = window.addEventListener('scroll',(event) =>{
+      this.scrollHandler(event)
     })
-
+  }
+  render() {
+    console.log("helloloolol")
+    console.log(this.state.results.length)
     return (
-      // <div className="container">
-      //   <div className="row">
-      //     <div className="col">
-      //       1 of 3
-      //       <h1>Cawabunggaaaa</h1>
-      //       <p>hello</p>
-      //     </div>
-      //     <div className="col-6 Posts" >
-      //       2 of 3 (wider)
-            
-      //       {result}
-            
-      //     </div>
-      //     <div className="col" id="map">
-      //       3 of 3
-      //     </div>
-      //   </div>
-      // </div>
-
 
       <div className="App">
         <h1>Cawabunggaaaa</h1>
         <p>hello</p>
-
         <div className="Posts" >
-          <ul>
-            {result}
-          </ul>
-
+          <Place results={this.state.results} />
         </div>
         <div id="map">
-
         </div>
       </div>
     );
