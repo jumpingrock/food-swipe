@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-
+// class sideNav extends Component{
+  
+// }
 class Nav extends Component {
     constructor(props) {
         super(props)
@@ -20,8 +22,10 @@ class Nav extends Component {
            <div class="pos-f-t">
                 <div class="collapse" id="navbarToggleExternalContent">
                 <div class="bg-dark p-4">
-                <h4 class="text-white">Collapsed content</h4>
-                <span class="text-muted">Toggleable via the navbar brand.</span>
+                <h5 class="text-white">Collapsed content</h5>
+                <h5 class="text-white">Popular choice of this area</h5>
+                <h5 class="text-white">About us</h5>
+                {/* <span class="text-muted">Please hire me!</span> */}
                 </div>
             </div>
             <nav class="navbar navbar-dark bg-dark" id='title'><b>Food-swipe!</b>

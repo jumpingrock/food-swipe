@@ -66,10 +66,9 @@ class App extends Component {
     const pageOffset = window.pageYOffset + window.innerHeight
     const bottomOffset = 1
     if(pageOffset > lastDivOffset - bottomOffset) {
-      console.log("this is from scollhandler")
+      // console.log("this is from scollhandler")
       // this.nextResultHandler();
       this.setState({scrolling: true}, this.nextResultHandler);
-
     }
   }
 
@@ -91,14 +90,14 @@ class App extends Component {
             <div class="row" >
                 
               <div class="col-sm-2" >
-                One of three columns
+                
               </div>
               <div class="col-xl" >
-                two of three columns
+                <br/>
                 <Place results={this.state.results} />
               </div>
               <div class="col-sm-2" >
-                three of three columns
+                
               </div>
             </div>
             <div id="end"></div>
