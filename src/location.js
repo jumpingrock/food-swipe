@@ -4,7 +4,10 @@
 const fillLocation = () => {
   let location = new Promise(function (resolve, reject) {
     navigator.geolocation.getCurrentPosition(
+      
       function (result) {
+        console.log(result)
+        console.log(result.coords.latitude, result.coords.longitude)
         resolve(new window.google.maps.LatLng(result.coords.latitude, result.coords.longitude))
       }, 
       function (error) { 
@@ -14,27 +17,23 @@ const fillLocation = () => {
       {enableHighAccuracy: true}
     )
   })
-
-
+  
   return location;
 }
 // This example requires the Places library. Include the libraries=places
 // parameter when you first load the API. For example:
-// <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
 var map;
 async function initMap(callback) {
-  // fillLocation()
   // Create the map.
   var pyrmont = await fillLocation()
-  // console.log(pyrmont)
+  console.log(pyrmont)
   map = new window.google.maps.Map(document.getElementById('map'), {
     center: pyrmont,
     zoom: 17
 
   });
-
-
+  
   callback(map, pyrmont);
 }
 
