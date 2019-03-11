@@ -1,3 +1,12 @@
+The focus of this app is to help user find what they want or do not want to eat ASAP without the hassle of clicking through multiple page.
+
+App uses the GPS coordinate API within the browser to query Google Places to return a list of restaurant rank by distance to coordinate. 
+
+App also uses infinite scroll to make browsing more seamless. 
+
+
+
+---------------------------------------------------------------------------------------------------
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
